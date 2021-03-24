@@ -1,0 +1,102 @@
+medel2.txt
+
+model1 구조 
+=> 화면에서 데이터 처리를 한번에 사용
+=> jsp 페이지에서 자바코드, html코드 수정
+=> 장점 : 한페이지안에서 해결되므로 빠르게 결과를 확인 가능하다.(php 구성 페이지)
+=> 단점 : 코드를 한번에 수정하기 어렵다. : HTML 코드변경에도 컴파일이 필요
+
+
+
+model2 구조 (MVC패턴)  [ java(초급) 디자인패턴(중급) ]
+=> 화면(디자인부분), 비지니스로직(처리부분)영역을 완전히 분리해서 개발
+=> 각각의 영역을 동시에 개발가능
+=> 장점 : 대규모 프로젝트에 좋음
+=> 단점 : 복잡함(설계가 어려움)
+
+
+* M V C 패턴
+	
+	Model : 비지니스 로직(pro페이지) , 디비 처리 - .java
+	View : 화면(사용자가 보는 화면) - .jsp
+	Controller : Model과 View를 연결 - 서블릿
+	
+	* 모든 페이지의 이동은 컨트롤러에서 제어함.
+	* model2 구조에서는 절대로 페이지 직접 호출 x
+	 => 주소줄에 .jsp 페이지 호출 (x)
+	 => 주소줄에 가상주소 사용.
+	사용자 요청 -> Controller -----> (DB사용시) Model -> DAO ->DB
+						   \---> (DB미사용시) View	
+	
+   			   
+   			   
+  회원정보 테이블 			   
+   	CREATE TABLE `model2`.`itwill_member` (
+  `id` VARCHAR(50) NOT NULL,
+  `pass` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `age` INT NULL,
+  `gender` VARCHAR(10) NULL,
+  `email` VARCHAR(200) NOT NULL,
+  `reg_date` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC));
+  
+  
+  
+  * 도메인 : 프로젝트 중요한 개념(명사)
+  	 - 회원, 상품, 주문, 결제, 리뷰,.....
+  	 
+  
+  * 상품 도메인 - 관리자일때만 상품 등록 
+   => 등록된 정보는 일반 사용자도 확인가능
+   => 요구사항을 바탕으로 디비 테이블을 생성
+   
+   
+   
+    CREATE TABLE `model2`.`itwill_goods` (
+  `num` INT NOT NULL,
+  `category` VARCHAR(50) NULL,
+  `name` VARCHAR(50) NULL,
+  `content` VARCHAR(1000) NULL,
+  `size` VARCHAR(45) NULL,
+  `color` VARCHAR(45) NULL,
+  `amount` INT NULL,
+  `price` INT NULL,
+  `image` VARCHAR(1000) NULL,
+  `best` INT NULL,
+  `date` VARCHAR(50) NULL,
+  PRIMARY KEY (`num`));
+   			   
+   			   
+   			   
+   * 일반유저 상품정보 확인
+   	- 등록된 상품의 정보를 확인
+   	- 상품의 상세페이지 확인			   
+   	- 상품의 옵션 선택 (color, size) + 수량
+   	- 구매 / 장바구니 이동	 ( 각각의 도메인의로 만들기)	   
+   			   
+   			   
+
+ 
+ * 장바구니 테이블 생성
+  
+   CREATE TABLE `itwill_basket` (
+  `b_num` int(11) NOT NULL,
+  `b_m_id` varchar(50) DEFAULT NULL,
+  `b_g_num` int(11) DEFAULT NULL,
+  `b_g_amount` int(11) DEFAULT NULL,
+  `b_g_size` varchar(50) DEFAULT NULL,
+  `b_g_color` varchar(50) DEFAULT NULL,
+  `b_date` date DEFAULT NULL,
+  PRIMARY KEY (`b_num`)
+)
+
+
+
+
+
+
+
+
+
